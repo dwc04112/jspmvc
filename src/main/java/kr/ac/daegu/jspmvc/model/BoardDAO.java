@@ -129,6 +129,7 @@ public class BoardDAO {
             Time writeTime = rs.getTime("writeTime");
             int readCount = rs.getInt("readCount");
             int commentCount = rs.getInt("commentCount");
+            String password = rs.getString("password");
 
             data.setId(id);
             data.setAuthor(author);
@@ -138,6 +139,7 @@ public class BoardDAO {
             data.setWriteTime(writeTime);
             data.setReadCount(readCount);
             data.setCommentCount(commentCount);
+            data.setPassword(password);
 
         }
         return data;
