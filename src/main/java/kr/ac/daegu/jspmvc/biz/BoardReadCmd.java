@@ -11,7 +11,7 @@ import java.sql.SQLException;
 
 public class BoardReadCmd implements BoardCmd {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    public boolean execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // parsing
         // 데이터의 형변환(참조형 -> 기본형)
         // java wrapper class
@@ -33,5 +33,6 @@ public class BoardReadCmd implements BoardCmd {
         // boardRead.jsp에 보여줄 데이터를 셋
         request.setAttribute("boardData", boardData);
 
+        return true;
     }
 }

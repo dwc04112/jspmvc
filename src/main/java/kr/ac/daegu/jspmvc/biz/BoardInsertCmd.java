@@ -1,4 +1,3 @@
-
 package kr.ac.daegu.jspmvc.biz;
 
 import kr.ac.daegu.jspmvc.model.BoardDAO;
@@ -11,7 +10,7 @@ import java.sql.SQLException;
 
 public class BoardInsertCmd implements BoardCmd {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response)
+    public boolean execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // enduser로부터 입력받은 데이터
         int newId;
@@ -36,6 +35,6 @@ public class BoardInsertCmd implements BoardCmd {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
-
+        return true;
     }
 }

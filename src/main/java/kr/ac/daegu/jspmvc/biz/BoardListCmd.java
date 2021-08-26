@@ -16,7 +16,7 @@ import java.util.ArrayList;
  * */
 public class BoardListCmd implements BoardCmd {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response)
+    public boolean execute(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         // db에 접근해서 데이터 가져오는 인스턴스
         BoardDAO dao = new BoardDAO();
@@ -34,5 +34,7 @@ public class BoardListCmd implements BoardCmd {
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+
+        return true;
     }
 }
