@@ -50,10 +50,11 @@ public class BoardFrontController extends HttpServlet {
             cmd.execute(request, response);
             viewPage = "boardList.bbs";
         }
-        // mission : 글 읽기
+        // 글 읽기
         if(cmdURI.equals("/boardRead.bbs")){
             cmd = new BoardReadCmd();
-            viewPage = "boardRead.bbs";
+            cmd.execute(request, response);
+            viewPage = "view/boardRead.jsp";
         }
         RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);

@@ -29,7 +29,7 @@
         <tr>
             <td>${row.id}</td>
             <td>${row.author}</td>
-            <td><a href ="#">${row.subject}</a></td><!-- 제목을 누르면 글 읽기에 해당하는 controller 요청-->
+            <td><a href="boardRead.bbs?id=${row.id}">${row.subject}</a></td><!-- 제목을 누르면 글 읽기에 해당하는 controller 요청-->
             <td>${row.writeDate}</td>
             <td>${row.writeTime}</td>
             <td>${row.readCount}</td>

@@ -1,6 +1,7 @@
 package kr.ac.daegu.jspmvc.biz;
 
 import kr.ac.daegu.jspmvc.model.BoardDAO;
+import kr.ac.daegu.jspmvc.model.BoardDTO;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -10,28 +11,27 @@ import java.sql.SQLException;
 
 public class BoardReadCmd implements BoardCmd {
     @Override
-    public void execute(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
-        // enduser로부터 입력받은 데이터
-        int newId;
-        String subject = request.getParameter("subject");
-        String author = request.getParameter("author");
-        String content = request.getParameter("content");
-        // enduser로부터 입력받은 데이터 잘 들어왔는지 확인 log
-        System.out.println("subject=" + subject);
-        System.out.println("author=" + author);
-        System.out.println("content=" + content);
-
+    public void execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // parsing
+        // 데이터의 형변환(참조형 -> 기본형)
+        // java wrapper class
+        int id = Integer.parseInt(request.getParameter("id"));
         // db에 접근해서 데이터 가져오는 인스턴스
         BoardDAO dao = new BoardDAO();
 
+        // dao의 기능중 id값으로 한건의 데이터를 담는 객체 준비.
+        BoardDTO boardData = new BoardDTO();
         try {
-            // board 테이블에 들어갈 id값을 가져오기 : board.id중에서 가장 높은 id값 + 1
-            newId = dao.getBoardNewId();
-            // dao 기능 호출해서 enduser가 입력한 데이터를 insert
-            dao.insertBoardContent(newId, subject, author, content);
+            // 조회수 +1
+            // boardRowPlusReadCount() : readCount 업데이트 해라, id : 어느 row의 id값인지?, 1 : 얼마나 업데이트 할건지?
+            dao.boardRowPlusReadCount(id, 1);
+            boardData = dao.getBoardData(id);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
+
+        // boardRead.jsp에 보여줄 데이터를 셋
+        request.setAttribute("boardData", boardData);
+
     }
 }
