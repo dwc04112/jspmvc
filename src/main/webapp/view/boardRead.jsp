@@ -50,7 +50,7 @@
     <tr>
         <td colspan="2">
             <a href="boardList.bbs">[글 목록 보기]</a>
-            [수정하기]
+            <a href="./view/boardPassword.jsp?id=${boardData.id}">[수정하기]</a>
             [삭제하기]
         </td>
     </tr>
