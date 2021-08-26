@@ -1,4 +1,3 @@
-
 package kr.ac.daegu.jspmvc.model;
 
 import java.sql.*;
@@ -90,7 +89,8 @@ public class BoardDAO {
     public void insertBoardContent(int newId,
                                    String subject,
                                    String author,
-                                   String content) throws ClassNotFoundException, SQLException {
+                                   String content,
+                                   String password) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
@@ -98,11 +98,12 @@ public class BoardDAO {
 
         // 쿼리 준비 & db 쿼리
         // insert into board values (1, 'testAuthor', 'testSubject', 'testContent', CURDATE(), CURTIME(), 0, 0)
-        pstmt = conn.prepareStatement("insert into Board values (?, ?, ?, ?, CURDATE(), CURTIME(), 0, 0)");
+        pstmt = conn.prepareStatement("insert into Board values (?, ?, ?, ?, CURDATE(), CURTIME(), 0, 0, ?)");
         pstmt.setInt(1, newId);
         pstmt.setString(2, subject);
         pstmt.setString(3, author);
         pstmt.setString(4, content);
+        pstmt.setString(5, password);
         pstmt.executeUpdate();
 
     }

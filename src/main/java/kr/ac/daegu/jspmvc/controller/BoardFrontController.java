@@ -56,6 +56,10 @@ public class BoardFrontController extends HttpServlet {
             cmd.execute(request, response);
             viewPage = "view/boardRead.jsp";
         }
+        //글 수정
+
+
+
         RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);
 

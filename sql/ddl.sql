@@ -6,6 +6,7 @@ create table Board(
                       writeDate Date not null,        -- 작성 날짜
                       writeTime Time not null,        -- 작성 시간
                       readCount int not null,         -- 조회수
-                      commentCount int not null      -- 댓글 갯수
+                      commentCount int not null,   				    -- 댓글 갯수
+                      password varchar(300) not null dafault '0000' -- 글 수정삭제 비밀번호
 )
     insert into board values (1, 'testAuthor', 'testSubject', 'testContent', CURDATE(), CURTIME(), 0, 0)
