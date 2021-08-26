@@ -157,4 +157,20 @@ public class BoardDAO {
         pstmt.setInt(2, rowId);
         pstmt.executeUpdate();
     }
+
+    public void updateBoardContent(int id,
+                                   String subject,
+                                   String content) throws ClassNotFoundException, SQLException {
+        // db에 접속해서
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        // 해당 아이디의 row에서 subject와 content를 업데이트
+        pstmt = conn.prepareStatement("update Board set subject=?, content=? where id = ?");
+        pstmt.setString(1, subject);
+        pstmt.setString(2, content);
+        pstmt.setInt(3, id);
+        pstmt.executeUpdate();
+
+    }
 }

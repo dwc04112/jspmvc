@@ -57,7 +57,7 @@ public class BoardFrontController extends HttpServlet {
          * 수정하기 관련
          * */
         // 글의 패스워드 체크
-        if(cmdURI.equals("/boardPwdCheck.bbs")){
+        if(cmdURI.equals("/boardPwdCheckToUpdate.bbs")){
             cmd = new BoardPwdCheckCmd();
             boolean isPasswordCorrect = cmd.execute(request, response);
             if(isPasswordCorrect){
@@ -66,15 +66,18 @@ public class BoardFrontController extends HttpServlet {
                 viewPage = "view/boardPwdCheckFalse.jsp";
             }
         }
-        //글 수정 처리
+        // 글 수정 처리
         if(cmdURI.equals("/boardUpdate.bbs")){
-            //글 수정처리 bizlogic
+            // 글 수정처리 bizlogic
+            cmd = new BoardUpdateCmd();
+            cmd.execute(request, response);
             // 바로 글 목록 화면으로
-//            cmd = new BoardUpdateCmd();
-            cmd.execute(request,response);
             viewPage = "boardList.bbs";
         }
 
+        /*
+         * 삭제하기 관련
+         * */
 
         RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
         dispatcher.forward(request, response);
