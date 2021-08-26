@@ -30,7 +30,7 @@ public class BoardReadCmd implements BoardCmd {
             e.printStackTrace();
         }
 
-        // boardRead.jsp에 보여줄 데이터를 셋
+        //  boardRead.jsp에 보여줄 데이터를 셋
         request.setAttribute("boardData", boardData);
 
         return true;
