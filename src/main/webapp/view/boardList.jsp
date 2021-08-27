@@ -11,10 +11,14 @@
     <tr>
         <td colspan="7">
             <label for="pagePerRow">페이지당 보여줄 글의 갯수 :</label>
-            <form action="boardList.bbs?page=1" method="post">
+            <!-- calibration : Key,Value 값을 '처리에 의미 있는 있는 범위 내로' 데이터 처리 -->
+            <!-- validation  : Key,Value 값 검증(처리할 수 있는 데이터 타입인가? 데이터 포맷인가?) -->
+            <form action="boardList.bbs?page=1" name="reqPagePerRow" method="post">
                 <input type="text" name="pagePerRow" id="pagePerRow" value="${pagePerRow}"/>
-                <input type="submit" value="확인"/>
             </form>
+            <button onclick="checkPagePerRow()">확인</button>
+            <%--                <input type="submit" value="확인"/>--%>
+
         </td>
     </tr>
     <tr>
@@ -50,6 +54,21 @@
         </td>
     </tr>
 </table>
+<script>
+    function checkPagePerRow() {
+        // input name="pagePerRow"의 데이터 가져와서
+        const value = document.getElementById("pagePerRow").value;
+        console.log('value', value);
+        // 숫자로 변환 가능한지 체크
+        if(!isNaN(Number(value))){
+            // 변환가능 : submit
+            reqPagePerRow.submit();
+        } else {
+            // 불가능 : alert('숫자를 정확히 입력 해 주세요')
+            alert('숫자를 정확히 입력 해 주세요');
+        }
+    }
+</script>
 나와야하는 페이지 선택 갯수 : ${totalPageCount}
 </body>
 </html>
