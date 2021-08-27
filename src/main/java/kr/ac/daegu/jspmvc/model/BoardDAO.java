@@ -4,7 +4,8 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class BoardDAO { //DatabaseAccessObject : 이 객체가 db에 접근
+// DatabaseAccessObject : 이 객체가 db에 접속해서 쿼리를 날리고 결과를 리턴해주는 책임
+public class BoardDAO {
     private static final String DB_URL  = "jdbc:mariadb://localhost:3306/dgd";
     private static final String DB_USER = "root";
     private static final String DB_PW   = "0000";
@@ -18,15 +19,27 @@ public class BoardDAO { //DatabaseAccessObject : 이 객체가 db에 접근
         return true;
     }
 
-    public ArrayList<BoardDTO> getBoardList() throws ClassNotFoundException, SQLException {
+    public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
+        // 페이징 처리에 따라 rowNum의 시작과 끝값을 변수처리
+        int startRowNum;
+        int endRowNum = pageNum*pagePerRow;
+        if(pageNum == 1){
+            startRowNum = pageNum;
+        } else {
+            startRowNum = (pagePerRow*(pageNum-1))+1;
+        }
+
         // 쿼리 준비 & db 쿼리
-        pstmt = conn.prepareStatement("select * from Board");
+        pstmt = conn.prepareStatement("select * \n" +
+                "from \n" +
+                "(select board.*, ROW_NUMBER() OVER() as rowNum from board order by id asc) tb\n" +
+                "where tb.rowNum between "+startRowNum+" and "+endRowNum);
         rs = pstmt.executeQuery();
 
         // 글 목록을 반환할 ArrayList
@@ -174,15 +187,14 @@ public class BoardDAO { //DatabaseAccessObject : 이 객체가 db에 접근
 
     }
 
-
-    public void deleteBoardData(int id) throws ClassNotFoundException, SQLException{
+    public void deleteBoardData(int id) throws ClassNotFoundException, SQLException {
+        // db에 접속해서
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
         PreparedStatement pstmt = null;
-
+        // 해당 아이디의 row를 삭제
         pstmt = conn.prepareStatement("delete from board where id = ?");
-        pstmt.setInt(1,id);
+        pstmt.setInt(1, id);
         pstmt.executeUpdate();
-
     }
 }
