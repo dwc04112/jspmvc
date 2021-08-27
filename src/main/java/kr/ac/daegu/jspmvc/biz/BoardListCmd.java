@@ -1,4 +1,3 @@
-
 package kr.ac.daegu.jspmvc.biz;
 
 import kr.ac.daegu.jspmvc.model.BoardDAO;
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class BoardListCmd implements BoardCmd {
 
     // 페이지당 몇개의 글목록을 보여줄것인지?
-    public static final int PAGE_PER_ROW = 3;
+    public static final int DEFAULT_PAGE_PER_ROW = 3;
 
     @Override
     public boolean execute(HttpServletRequest request, HttpServletResponse response)
@@ -28,8 +27,17 @@ public class BoardListCmd implements BoardCmd {
         // dao 기능 호출해서 가져온 db 데이터를 저장하는 컬렉션
         ArrayList<BoardDTO> list = new ArrayList<BoardDTO>();
 
+        // 한페이지당 보여줄 글의 갯수 (default 3)
+        String pagePerRowStr = request.getParameter("pagePerRow");
+        int pagePerRow = DEFAULT_PAGE_PER_ROW;
+        if(pagePerRowStr != null){
+            pagePerRow = Integer.parseInt(pagePerRowStr);
+        }
+
+
         // pageNum의 요청을 받는다.
         String page = request.getParameter("page");
+
         int pageNum;
         if(page == null){
             pageNum = 1;
@@ -38,20 +46,20 @@ public class BoardListCmd implements BoardCmd {
         }
 
         try {
-            list = dao.getBoardList(pageNum, PAGE_PER_ROW);
+            list = dao.getBoardList(pageNum, pagePerRow);
             /*
              * 페이지 번호가 몇번까지 나올 수 있는가?
              * */
             // (board테이블 전체 글의 갯수, row갯수)
             int totalRowCount = dao.getBoardTotalRowCount();
             // 전체 페이지 수 산출
-            int totalPageCount = getTotalPageCount(PAGE_PER_ROW, totalRowCount);
+            int totalPageCount = getTotalPageCount(pagePerRow, totalRowCount);
 
             /*
              * 가져온 db 데이터 리스트를 어떻게 jsp로 보여줄것인가?
              * */
             request.setAttribute("boardRowList", list);
-            request.setAttribute("totalRowCount", totalRowCount);
+            request.setAttribute("pagePerRow", pagePerRow);
             request.setAttribute("totalPageCount", totalPageCount);
 
         } catch (ClassNotFoundException | SQLException e) {

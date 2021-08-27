@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: keept
-  Date: 2021-08-24
-  Time: 오후 4:56
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!-- jstl -->
@@ -15,6 +8,15 @@
 <body>
 <!-- BoardListCmd.java에서 가져온 데이터를 어떻게 jsp파일에서 html 형태로 보여줄 것인가? -->
 <table>
+    <tr>
+        <td colspan="7">
+            <label for="pagePerRow">페이지당 보여줄 글의 갯수 :</label>
+            <form action="boardList.bbs?page=1" method="post">
+                <input type="text" name="pagePerRow" id="pagePerRow" value="${pagePerRow}"/>
+                <input type="submit" value="확인"/>
+            </form>
+        </td>
+    </tr>
     <tr>
         <td>글번호</td>
         <td>작성자</td>
@@ -43,12 +45,11 @@
     <tr>
         <td colspan="7">
             <c:forEach var="i" begin="1" end="${totalPageCount}">
-                <a href="boardList.bbs?page=${i}">[<c:out value="${i}"/>]</a>
-            </c:forEach>
+            <a href="boardList.bbs?page=${i}&pagePerRow=${pagePerRow}">[<c:out value="${i}"/>]<a/>
+                </c:forEach>
         </td>
     </tr>
 </table>
-전체 글row의 갯수 : ${totalRowCount}
 나와야하는 페이지 선택 갯수 : ${totalPageCount}
 </body>
 </html>
