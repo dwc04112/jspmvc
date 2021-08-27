@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 // db에서 Board테이블의 컬럼과 row를 정의.
-public class BoardDTO {
+public class BoardDTO { //DataTransferObject : db에서 가져오는 테이블 묶음
     private int id;                      // 글 id(글번호)
     private String author;               // 작성자 이름
     private String subject;              // 글 제목

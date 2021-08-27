@@ -34,13 +34,13 @@ public class BoardFrontController extends HttpServlet {
         String viewPage = null;
 
         // 글 목록 조회 처리(/jspmvc/boardList.bbs)
-        if(cmdURI.equals("/boardList.bbs")){
+        if (cmdURI.equals("/boardList.bbs")) {
             cmd = new BoardListCmd();
             cmd.execute(request, response);
             viewPage = "view/boardList.jsp";
         }
         // 글 추가하기
-        if(cmdURI.equals("/boardInsert.bbs")){
+        if (cmdURI.equals("/boardInsert.bbs")) {
             // enduser가 작성한 글을 db에 insert 시키는
             // bizness logic을 작성
             cmd = new BoardInsertCmd();
@@ -48,7 +48,7 @@ public class BoardFrontController extends HttpServlet {
             viewPage = "boardList.bbs";
         }
         // 글 읽기
-        if(cmdURI.equals("/boardRead.bbs")){
+        if (cmdURI.equals("/boardRead.bbs")) {
             cmd = new BoardReadCmd();
             cmd.execute(request, response);
             viewPage = "view/boardRead.jsp";
@@ -57,17 +57,17 @@ public class BoardFrontController extends HttpServlet {
          * 수정하기 관련
          * */
         // 글의 패스워드 체크
-        if(cmdURI.equals("/boardPwdCheckToUpdate.bbs")){
+        if (cmdURI.equals("/boardPwdCheckToUpdate.bbs")) {
             cmd = new BoardPwdCheckCmd();
             boolean isPasswordCorrect = cmd.execute(request, response);
-            if(isPasswordCorrect){
+            if (isPasswordCorrect) {
                 viewPage = "view/boardReadToUpdate.jsp";
             } else {
                 viewPage = "view/boardPwdCheckFalse.jsp";
             }
         }
         // 글 수정 처리
-        if(cmdURI.equals("/boardUpdate.bbs")){
+        if (cmdURI.equals("/boardUpdate.bbs")) {
             // 글 수정처리 bizlogic
             cmd = new BoardUpdateCmd();
             cmd.execute(request, response);
@@ -76,11 +76,25 @@ public class BoardFrontController extends HttpServlet {
         }
 
         /*
-         * 삭제하기 관련
+         * 삭제하기 관련 패스워드 체크
          * */
+        if (cmdURI.equals("/boardPwdCheckToDelete.bbs")) {
+            cmd = new BoardPwdCheckCmd();
+            boolean isPasswordCorrect = cmd.execute(request, response);
+            if (isPasswordCorrect) {
+                // 삭제 처리 하고
+                cmd = new BoardDeleteCmd();
+                cmd.execute(request, response);
+                // boardList.bbs호출
+                viewPage = "boardList.bbs";
+            } else {
+                viewPage = "view/boardPwdCheckFalse.jsp";
+            }
+        }
 
-        RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
-        dispatcher.forward(request, response);
+            RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
+            dispatcher.forward(request, response);
+
 
     }
 }
