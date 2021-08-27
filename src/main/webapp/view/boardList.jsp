@@ -43,7 +43,7 @@
     <tr>
         <td colspan="7">
             <c:forEach var="i" begin="1" end="${totalPageCount}">
-                [<c:out value="${i}"/>]
+                <a href="boardList.bbs?page=${i}">[<c:out value="${i}"/>]</a>
             </c:forEach>
         </td>
     </tr>
