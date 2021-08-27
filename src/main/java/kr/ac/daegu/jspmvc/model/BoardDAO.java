@@ -197,4 +197,21 @@ public class BoardDAO {
         pstmt.setInt(1, id);
         pstmt.executeUpdate();
     }
+
+    public int getBoardTotalRowCount() throws ClassNotFoundException, SQLException {
+        // db에 접속해서
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        // board테이블 전체 row 갯수
+        pstmt = conn.prepareStatement("select count(*) as count from Board");
+        rs = pstmt.executeQuery();
+
+        if(rs.next()){
+            return rs.getInt("count");
+        }
+
+        throw new SQLException("Board테이블의 전체 갯수를 가지고 올 수 없습니다.");
+    }
 }

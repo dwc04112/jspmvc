@@ -40,7 +40,15 @@
         <!-- boardInsert.jsp로 이동 되도록 처리 해 보시오. -->
         <td colspan="7"><a href="/jspmvc/view/boardInsert.jsp">[글 추가하기]</a></td>
     </tr>
+    <tr>
+        <td colspan="7">
+            <c:forEach var="i" begin="1" end="${totalPageCount}">
+                [<c:out value="${i}"/>]
+            </c:forEach>
+        </td>
+    </tr>
 </table>
-
+전체 글row의 갯수 : ${totalRowCount}
+나와야하는 페이지 선택 갯수 : ${totalPageCount}
 </body>
 </html>
