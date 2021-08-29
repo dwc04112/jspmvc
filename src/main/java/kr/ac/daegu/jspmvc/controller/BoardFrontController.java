@@ -91,6 +91,13 @@ public class BoardFrontController extends HttpServlet {
                 viewPage = "view/boardPwdCheckFalse.jsp";
             }
         }
+        if (cmdURI.equals("/commentInsert.bbs")) {
+            // 댓글 submit bizlogic
+            cmd = new CommentInsertCmd();
+            cmd.execute(request, response);
+            // 바로 글 목록 화면으로
+            viewPage = "boardRead.bbs";
+        }
 
             RequestDispatcher dispatcher = request.getRequestDispatcher(viewPage);
             dispatcher.forward(request, response);

@@ -50,6 +50,29 @@
         </td>
     </tr>
 </table>
+================================
+<!--댓글 입력하는 창-->
+<form action="commentInsert.bbs" method="post">
+    <table>
+        <tr>
+            <td>작성자</td>
+            <td>작성한사람1</td>
+        </tr>
+        <tr>
+            <td><label for="comment">댓글</label></td>
+            <td><input type="text" name="comment" id="comment" value="댓글 입력창"></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <input type="submit" value="[확인]">
+            </td>
+        </tr>
+    </table>
+</form>
+
+<!-- 작성한 댓글목록 출력해야함 -->
+
+
 <!-- [글 목록 보기][수정하기][삭제하기] 글 목록보기 클릭하면 boardList.bbs로 foward -->
 글 읽기 화면입니다.
 

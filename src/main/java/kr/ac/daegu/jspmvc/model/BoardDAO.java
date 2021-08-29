@@ -19,7 +19,8 @@ public class BoardDAO {
         return true;
     }
 
-    public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow) throws ClassNotFoundException, SQLException {
+    public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow)
+            throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
