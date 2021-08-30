@@ -64,7 +64,23 @@
 </table>
 ================================
 <table>
-    
+    <!-- 작성한 댓글목록 출력해야함 -->
+    <tr>
+        <td>댓글번호</td>
+        <td>작성자</td>
+        <td>내용</td>
+        <td>작성일</td>
+        <td>작성시각</td>
+    </tr>
+    <c:forEach items="${RowCommentList}" var="row">
+        <tr>
+            <td>${row.id}</td>
+            <td>${row.author}</td>
+            <td>${row.comment}</td>
+            <td>${row.writeDate}</td>
+            <td>${row.writeTime}</td>
+        </tr>
+    </c:forEach>
 </table>
 <!--댓글 입력하는 창-->
 

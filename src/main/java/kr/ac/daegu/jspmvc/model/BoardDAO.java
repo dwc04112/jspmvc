@@ -254,4 +254,6 @@ public class BoardDAO {
         // 예외 발생
         throw new SQLException("글 컨텐츠를 새로 입력하기 위한 아이디값 받아오기를 실패하였습니다.");
     }
+
+    
 }
