@@ -215,4 +215,43 @@ public class BoardDAO {
 
         throw new SQLException("Board테이블의 전체 갯수를 가지고 올 수 없습니다.");
     }
+
+    public void insertCommnet(int newCommentId,
+                              int boardId,
+                              String commentAuthor,
+                              String commentContent) throws ClassNotFoundException, SQLException {
+        // db에 접속해서
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+
+        // 새로운 댓글을 insert
+        pstmt = conn.prepareStatement("insert into comment values (?, ?, ?, ?, CURDATE(), CURTIME())");
+        pstmt.setInt(1, newCommentId);
+        pstmt.setInt(2, boardId);
+        pstmt.setString(3, commentAuthor);
+        pstmt.setString(4, commentContent);
+        pstmt.executeUpdate();
+    }
+
+    public int getCommentNewId()  throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        // newId를 가져오는 쿼리
+        pstmt = conn.prepareStatement("select max(Cid) + 1 AS newId from comment");
+        rs = pstmt.executeQuery();
+
+        int newId = 0;
+        if(rs.next()){
+            newId = rs.getInt("newId");
+            return newId;
+        }
+
+        // 예외 발생
+        throw new SQLException("글 컨텐츠를 새로 입력하기 위한 아이디값 받아오기를 실패하였습니다.");
+    }
 }

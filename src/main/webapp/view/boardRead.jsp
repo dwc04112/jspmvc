@@ -49,26 +49,22 @@
             <!-- ORDER : 패스워드 확인 하고 boardPasswordToDelete.jsp -->
         </td>
     </tr>
+    <tr>
+        <td><label for ="commentAuthor">작성자</label></td>
+        <td><laber for ="commentContent">댓글 내용</laber></td>
+    </tr>
+    <form action="commentInsert.bbs" method="post">
+    <tr>
+        <input type="hidden" name="boardId" value="${boardData.id}"/>
+        <td><input type="text" name="commentAuthor" id="commentAuthor"/></td>
+        <td><input type="text" name="commentContent" id ="commentContent"/></td>
+        <td><input type="submit" value="[확인]"/></td>
+    </tr>
+    </form>
 </table>
 ================================
 <!--댓글 입력하는 창-->
-<form action="commentInsert.bbs" method="post">
-    <table>
-        <tr>
-            <td>작성자</td>
-            <td>작성한사람1</td>
-        </tr>
-        <tr>
-            <td><label for="comment">댓글</label></td>
-            <td><input type="text" name="comment" id="comment" value="댓글 입력창"></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <input type="submit" value="[확인]">
-            </td>
-        </tr>
-    </table>
-</form>
+
 
 <!-- 작성한 댓글목록 출력해야함 -->
 
