@@ -32,11 +32,13 @@ public class BoardReadCmd implements BoardCmd {
             dao.boardRowPlusReadCount(id, 1);
             boardData = dao.getBoardData(id);
 
-            list = dao.getBoardList();
+
+
+            list = dao.getBoardCommentList();
             /*
              * 가져온 db 데이터 리스트를 어떻게 jsp로 보여줄것인가?
              * */
-            request.setAttribute("boardRowList", list);
+            request.setAttribute("CommentRowList", list);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

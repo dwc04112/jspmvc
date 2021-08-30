@@ -39,7 +39,14 @@
     </tr>
     <tr>
         <td>댓글수</td>
-        <td>${boardData.commentCount}</td>
+        <td>
+            <c:forEach items="${CommentRowList}" var="row">
+                <c:if test="${boardData.id == row.id}">
+                    <c:set var="i" value="${i+1}"/>
+                </c:if>
+            </c:forEach>
+            <c:out value="${i}"/>
+        </td>
     </tr>
     <tr>
         <td colspan="2">
@@ -66,20 +73,22 @@
 <table>
     <!-- 작성한 댓글목록 출력해야함 -->
     <tr>
-        <td>댓글번호</td>
+
         <td>작성자</td>
         <td>내용</td>
         <td>작성일</td>
         <td>작성시각</td>
     </tr>
-    <c:forEach items="${RowCommentList}" var="row">
+    <c:forEach items="${CommentRowList}" var="row">
+        <c:if test="${boardData.id == row.id}">
         <tr>
-            <td>${row.id}</td>
+
             <td>${row.author}</td>
-            <td>${row.comment}</td>
+            <td>${row.content}</td>
             <td>${row.writeDate}</td>
             <td>${row.writeTime}</td>
         </tr>
+        </c:if>
     </c:forEach>
 </table>
 <!--댓글 입력하는 창-->

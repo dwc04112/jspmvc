@@ -255,5 +255,60 @@ public class BoardDAO {
         throw new SQLException("글 컨텐츠를 새로 입력하기 위한 아이디값 받아오기를 실패하였습니다.");
     }
 
-    
+    public ArrayList<CommentDTO> getBoardCommentList()
+            throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        pstmt = conn.prepareStatement("select * from comment");
+        rs = pstmt.executeQuery();
+
+
+        ArrayList<CommentDTO> RowCommentList = new ArrayList<CommentDTO>();
+        // db에서 데이터를 row단위로 가져와서
+        // list에 넣는다.
+
+        while (rs.next()) {
+            int Cid=rs.getInt("Cid");
+            int id=rs.getInt("id");
+            String author = rs.getString("author");
+            String content = rs.getString("content");
+            Date writeDate = rs.getDate("writeDate");
+            Time writeTime = rs.getTime("writeTime");
+
+
+            CommentDTO dto = new CommentDTO();
+            dto.setCid(Cid);
+            dto.setId(id);
+            dto.setAuthor(author);
+            dto.setContent(content);
+            dto.setWriteDate(writeDate);
+            dto.setWriteTime(writeTime);
+
+
+            RowCommentList.add(dto);
+        }
+        // db로부터 데이터 잘 들어왔는지 확인 (log 찍어봄)
+        for (CommentDTO dto : RowCommentList) {
+            System.out.println(dto.toString());
+        }
+
+        return RowCommentList;
+    }
+/*
+    public int CountComment(int boardId)  throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        pstmt = conn.prepareStatement("select count(comment.cid) AS NumCount from comment where comment.id =?");
+        rs = pstmt.executeQuery();
+        pstmt.setInt(1, boardId);
+        pstmt.executeUpdate();
+
+
+ */
 }

@@ -15,16 +15,16 @@ public class CommentDTO { //DataTransferObject : db에서 가져오는 테이블
     private Time writeTime;              // 작성 시간
 
 
-    public int getId() {
-        return id;
-    }
-
     public int getCid() {
         return Cid;
     }
 
     public void setCid(int cid) {
         Cid = cid;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public void setId(int id) {
