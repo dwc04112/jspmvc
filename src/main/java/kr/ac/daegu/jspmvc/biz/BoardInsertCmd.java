@@ -24,6 +24,17 @@ public class BoardInsertCmd implements BoardCmd {
         System.out.println("content=" + content);
         System.out.println("password=" + password);
 
+        int pid = Integer.parseInt(request.getParameter("boardPId"));
+        int depth = Integer.parseInt(request.getParameter("boardDepth"));
+        int porder = Integer.parseInt(request.getParameter("boardPorder"));
+
+
+
+        System.out.println("pidpidpid=" + pid);
+        System.out.println("depth=" + depth);
+        System.out.println("porder=" + porder);
+
+
         // db에 접근해서 데이터 가져오는 인스턴스
         BoardDAO dao = new BoardDAO();
 
@@ -31,7 +42,7 @@ public class BoardInsertCmd implements BoardCmd {
             // board 테이블에 들어갈 id값을 가져오기 : board.id중에서 가장 높은 id값 + 1
             newId = dao.getBoardNewId();
             // dao 기능 호출해서 enduser가 입력한 데이터를 insert
-            dao.insertBoardContent(newId, subject, author, content, password);
+            dao.insertBoardContent(newId, subject, author, content, password, pid, depth, porder);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

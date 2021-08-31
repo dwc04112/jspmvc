@@ -11,12 +11,8 @@ import java.sql.SQLException;
 public class BoardReplyInsertCmd implements BoardCmd {
     @Override
     public boolean execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        int newPid = Integer.parseInt(request.getParameter("boardPid"));
-
+        // enduser로부터 입력받은 데이터
         int newId;
-        int depth;
-        int porder;
         String subject = request.getParameter("subject");
         String author = request.getParameter("author");
         String content = request.getParameter("content");
@@ -27,15 +23,36 @@ public class BoardReplyInsertCmd implements BoardCmd {
         System.out.println("content=" + content);
         System.out.println("password=" + password);
 
+        int pid = Integer.parseInt(request.getParameter("boardPId"));
+        int depth = Integer.parseInt(request.getParameter("boardDepth"));
+        depth++;
+        int porder = Integer.parseInt(request.getParameter("boardPorder"));
+        /*
+        porder은 따로구해야한다
+        pid가 1일때 1,2,3..
+        pid가 2로가면 다시 1,2...
+        if(depth>0){
+            porder++;
+        }else{
+            porder=0;
+        }
+
+         */
+
+        System.out.println("pidpidpid=" + pid);
+        System.out.println("depth=" + depth);
+        System.out.println("porder=" + porder);
+
+
         // db에 접근해서 데이터 가져오는 인스턴스
         BoardDAO dao = new BoardDAO();
 
         try {
             // board 테이블에 들어갈 id값을 가져오기 : board.id중에서 가장 높은 id값 + 1
             newId = dao.getBoardNewId();
-            depth = dao.getBoardDepth();
             // dao 기능 호출해서 enduser가 입력한 데이터를 insert
-            dao.insertBoardReplyContent(newId, subject, author, content, password,newPid, depth, porder);
+            dao.insertBoardContent(newId, subject, author, content, password, pid, depth, porder);
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

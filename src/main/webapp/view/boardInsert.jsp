@@ -13,7 +13,9 @@
 <body>
 <form action="../boardInsert.bbs" method="post">
 <table>
-
+    <input type="hidden" name="boardPId" value="0">
+    <input type="hidden" name="boardDepth" value="0">
+    <input type="hidden" name="boardPorder" value="0">
     <tr>
         <td colspan="2">글 추가하기</td>
     </tr>

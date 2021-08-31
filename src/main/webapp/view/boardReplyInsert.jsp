@@ -12,8 +12,10 @@
 </head>
 <body>
 <form action="../boardReplyInsert.bbs" method="post">
+    <input type="hidden" name="boardPId" value="<%= request.getParameter("id")%>">
+    <input type="hidden" name="boardDepth" value="<%= request.getParameter("depth")%>">
+    <input type="hidden" name="boardPorder" value="<%= request.getParameter("porder")%>">
     <table>
-        <input type="hidden" name="boardPId" value="<%= request.getParameter("id")%>">
         <tr>
             <td colspan="2">글 추가하기</td>
         </tr>

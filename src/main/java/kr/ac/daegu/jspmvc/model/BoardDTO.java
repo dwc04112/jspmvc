@@ -15,6 +15,33 @@ public class BoardDTO { //DataTransferObject : db에서 가져오는 테이블 �
     private int readCount;               // 조회수
     private int commentCount;            // 댓글 갯수
     private String password;             // 수정 삭제를 위한 패스워드
+    private int pid;
+    private int depth;
+    private int porder;
+
+    public int getPid() {
+        return pid;
+    }
+
+    public void setPid(int pid) {
+        this.pid = pid;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public int getPorder() {
+        return porder;
+    }
+
+    public void setPorder(int porder) {
+        this.porder = porder;
+    }
 
     public String getPassword() {
         return password;
@@ -99,6 +126,9 @@ public class BoardDTO { //DataTransferObject : db에서 가져오는 테이블 �
                 ", writeTime=" + writeTime +
                 ", readCount=" + readCount +
                 ", commentCount=" + commentCount +
+                ", commentCount=" + pid +
+                ", commentCount=" + depth +
+                ", commentCount=" + porder +
                 '}';
     }
 }

@@ -47,6 +47,14 @@ public class BoardFrontController extends HttpServlet {
             cmd.execute(request, response);
             viewPage = "boardList.bbs";
         }
+        if (cmdURI.equals("/boardReplyInsert.bbs")) {
+            // enduser가 작성한 글을 db에 insert 시키는
+            // bizness logic을 작성
+            cmd = new BoardReplyInsertCmd();
+            cmd.execute(request, response);
+            viewPage = "boardList.bbs";
+        }
+
         // 글 읽기
         if (cmdURI.equals("/boardRead.bbs")) {
             cmd = new BoardReadCmd();
@@ -92,14 +100,6 @@ public class BoardFrontController extends HttpServlet {
             }
         }
 
-        // 답글 추가하기
-        if (cmdURI.equals("/boardReplyInsert.bbs")) {
-            // enduser가 작성한 글을 db에 insert 시키는
-            // bizness logic을 작성
-            cmd = new BoardReplyInsertCmd();
-            cmd.execute(request, response);
-            viewPage = "boardList.bbs";
-        }
 
         //댓글관련
 

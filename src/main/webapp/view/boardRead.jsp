@@ -48,10 +48,10 @@
                     <c:set var="i" value="${i+1}"/>
                 </c:if>
             </c:forEach>
-            <c:out value="${i}"/>
             <c:if test="${i==null}">
                 <c:set var="i" value="0"/>
             </c:if>
+            <c:out value="${i}"/>
         </td>
     </tr>
     <tr>
@@ -67,7 +67,7 @@
             <a href="boardList.bbs">[글 목록 보기]</a>
             <a href="./view/boardPasswordToUpdate.jsp?id=${boardData.id}">[수정하기]</a>
             <a href="./view/boardPasswordToDelete.jsp?id=${boardData.id}">[삭제하기]</a>
-            <a href="./view/boardReplyInsert.jsp?id=${boardData.id}">[답글쓰기]</a>
+            <a href="./view/boardReplyInsert.jsp?id=${boardData.id}&depth=${boardData.depth}&porder=${boardData.porder}">[답글쓰기]</a>
             <!-- ORDER : 패스워드 확인 하고 boardPasswordToDelete.jsp -->
         </td>
     </tr>

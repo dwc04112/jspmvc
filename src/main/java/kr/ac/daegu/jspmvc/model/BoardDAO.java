@@ -128,7 +128,9 @@ public class BoardDAO {
                                    String subject,
                                    String author,
                                    String content,
-                                   String password) throws ClassNotFoundException, SQLException {
+                                   String password,
+                                   int pid,
+                                   int depth, int porder) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
@@ -136,12 +138,15 @@ public class BoardDAO {
 
         // 쿼리 준비 & db 쿼리
         // insert into board values (1, 'testAuthor', 'testSubject', 'testContent', CURDATE(), CURTIME(), 0, 0)
-        pstmt = conn.prepareStatement("insert into Board values (?, ?, ?, ?, CURDATE(), CURTIME(), 0, 0, ?)");
+        pstmt = conn.prepareStatement("insert into Board values (?, ?, ?, ?, CURDATE(), CURTIME(), 0, 0, ?, ?, ? , ?)");
         pstmt.setInt(1, newId);
         pstmt.setString(2, subject);
         pstmt.setString(3, author);
         pstmt.setString(4, content);
         pstmt.setString(5, password);
+        pstmt.setInt(6,pid);
+        pstmt.setInt(7,depth);
+        pstmt.setInt(8,porder);
         pstmt.executeUpdate();
 
     }
@@ -168,6 +173,10 @@ public class BoardDAO {
             int readCount = rs.getInt("readCount");
             int commentCount = rs.getInt("commentCount");
             String password = rs.getString("password");
+            int pid = rs.getInt("pid");
+            int depth = rs.getInt("depth");
+            int porder = rs.getInt("porder");
+
 
             data.setId(id);
             data.setAuthor(author);
@@ -178,6 +187,9 @@ public class BoardDAO {
             data.setReadCount(readCount);
             data.setCommentCount(commentCount);
             data.setPassword(password);
+            data.setPid(pid);
+            data.setDepth(depth);
+            data.setPorder(porder);
 
         }
         return data;
