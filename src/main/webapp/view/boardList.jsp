@@ -37,7 +37,7 @@
         <td>조회수</td>
         <td>댓글갯수</td>
     </tr>
-    <!-- jstl if 태그를 써서 글번호가 짝수인 글의 목록만 보여주시오. -->
+
     <c:forEach items="${boardRowList}" var="row">
         <tr>
             <td>${row.id}</td>

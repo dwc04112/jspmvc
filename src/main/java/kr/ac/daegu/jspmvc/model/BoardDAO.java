@@ -324,6 +324,44 @@ public class BoardDAO {
         return RowCommentList;
     }
 
+    public int getBoardDepth() throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+
+        // newId를 가져오는 쿼리
+        pstmt = conn.prepareStatement("select max(depth) + 1  from Board");
+        rs = pstmt.executeQuery();
+
+        int depth = 0;
+        if(rs.next()){
+            depth = rs.getInt("depth");
+            return depth;
+        }
+
+        // 예외 발생
+        throw new SQLException("글 컨텐츠를 새로 입력하기 위한 아이디값 받아오기를 실패하였습니다.");
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
     public int CountComment(int boardId)  throws ClassNotFoundException, SQLException {
