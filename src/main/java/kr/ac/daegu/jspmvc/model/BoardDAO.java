@@ -79,6 +79,30 @@ public class BoardDAO {
         return boardRowList;
     }
 
+    public void CountCommentNum(int pageNum, int pagePerRow) throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        int startRowNum;
+        int endRowNum = pageNum*pagePerRow;
+        if(pageNum == 1){
+            startRowNum = pageNum;
+        } else {
+            startRowNum = (pagePerRow*(pageNum-1))+1;
+        }
+        for(int i= startRowNum; i<=endRowNum;i++) {
+            pstmt = conn.prepareStatement("update board set commentCount=(select count(id) from comment where id=?) where id=?");
+            pstmt.setInt(1, i);
+            pstmt.setInt(2, i);
+            rs = pstmt.executeQuery();
+        }
+    }
+
+
+
+
     public int getBoardNewId() throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
@@ -171,6 +195,8 @@ public class BoardDAO {
         pstmt.setInt(2, rowId);
         pstmt.executeUpdate();
     }
+
+
 
     public void updateBoardContent(int id,
                                    String subject,
@@ -297,6 +323,8 @@ public class BoardDAO {
 
         return RowCommentList;
     }
+
+
 /*
     public int CountComment(int boardId)  throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.

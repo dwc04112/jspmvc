@@ -47,6 +47,7 @@ public class BoardListCmd implements BoardCmd {
         }
 
         try {
+            dao.CountCommentNum(pageNum, pagePerRow);
             list = dao.getBoardList(pageNum, pagePerRow);
             /*
              * 페이지 번호가 몇번까지 나올 수 있는가?

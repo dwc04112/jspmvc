@@ -37,17 +37,31 @@
         <td>조회수</td>
         <td>${boardData.readCount}</td>
     </tr>
+
+
     <tr>
         <td>댓글수</td>
         <td>
+            <!--처음만든 댓글 수 구하기-->
             <c:forEach items="${CommentRowList}" var="row">
                 <c:if test="${boardData.id == row.id}">
                     <c:set var="i" value="${i+1}"/>
                 </c:if>
             </c:forEach>
             <c:out value="${i}"/>
+            <c:if test="${i==null}">
+                <c:set var="i" value="0"/>
+            </c:if>
         </td>
     </tr>
+    <tr>
+        <!-- 두번째 만든 댓글 수 구하기-->
+        <td>새로만든 댓글 수</td>
+        <td>${boardData.commentCount}</td>
+    </tr>
+
+
+
     <tr>
         <td colspan="2">
             <a href="boardList.bbs">[글 목록 보기]</a>
