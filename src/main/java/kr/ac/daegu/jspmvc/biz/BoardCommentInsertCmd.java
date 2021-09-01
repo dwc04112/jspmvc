@@ -18,6 +18,7 @@ public class BoardCommentInsertCmd implements BoardCmd {
         String commentAuthor = request.getParameter("commentAuthor");
         String commentContent = request.getParameter("commentContent");
         int newId;
+        int maxId;
         //log
         System.out.println("boardId = " + boardId);
         System.out.println("commentAuthor = " + commentAuthor);
@@ -26,9 +27,12 @@ public class BoardCommentInsertCmd implements BoardCmd {
         BoardDAO dao = new BoardDAO();
 
         try {
-            newId = dao.getCommentNewId();
-            dao.insertCommnet(newId, boardId, commentAuthor, commentContent);
 
+
+            newId = dao.getCommentNewId();
+            maxId = dao.getBoardNewId();
+            dao.insertCommnet(newId, boardId, commentAuthor, commentContent);
+            dao.CountCommentNum(maxId); //(pageNum, pagePerRow);
 
           //  request.setAttribute("NewIdCount", newId);
         }catch (ClassNotFoundException | SQLException e){

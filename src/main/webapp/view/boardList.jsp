@@ -40,9 +40,22 @@
 
     <c:forEach items="${boardRowList}" var="row">
         <tr>
-            <td>${row.id}</td>
+            <td>
+                <c:set var="sum" value="${sum+1}"/>
+                <c:out value="${sum}"/>
+
+            </td>
             <td>${row.author}</td>
-            <td><a href="boardRead.bbs?id=${row.id}">${row.subject}</a></td><!-- 제목을 누르면 글 읽기에 해당하는 controller 요청-->
+            <td>
+                <c:if test="${row.depth > 0}">
+                    <c:forEach var="i" begin="0" end="${row.depth -1}" >
+                        <c:out value="[RE:]"/>
+                    </c:forEach>
+                    <!--여기 수정해야함-->
+                </c:if>
+                <a href="boardRead.bbs?id=${row.id}">${row.subject}</a>
+                <!-- 제목을 누르면 글 읽기에 해당하는 controller 요청-->
+            </td>
             <td>${row.writeDate}</td>
             <td>${row.writeTime}</td>
             <td>${row.readCount}</td>
@@ -77,5 +90,6 @@
     }
 </script>
 나와야하는 페이지 선택 갯수 : ${totalPageCount}
+
 </body>
 </html>

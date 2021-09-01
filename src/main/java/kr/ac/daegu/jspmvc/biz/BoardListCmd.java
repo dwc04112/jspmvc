@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class BoardListCmd implements BoardCmd {
 
     // 페이지당 몇개의 글목록을 보여줄것인지?
-    public static final int DEFAULT_PAGE_PER_ROW = 3;
+    public static final int DEFAULT_PAGE_PER_ROW = 5;
 
     @Override
     public boolean execute(HttpServletRequest request, HttpServletResponse response)
@@ -47,7 +47,7 @@ public class BoardListCmd implements BoardCmd {
         }
 
         try {
-            dao.CountCommentNum(pageNum, pagePerRow);
+            //dao.CountCommentNum(pageNum, pagePerRow);
             list = dao.getBoardList(pageNum, pagePerRow);
             /*
              * 페이지 번호가 몇번까지 나올 수 있는가?

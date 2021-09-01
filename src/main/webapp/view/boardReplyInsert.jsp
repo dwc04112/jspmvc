@@ -12,7 +12,7 @@
 </head>
 <body>
 <form action="../boardReplyInsert.bbs" method="post">
-    <input type="hidden" name="boardPId" value="<%= request.getParameter("id")%>">
+    <input type="hidden" name="boardPId" value="<%= request.getParameter("pid")%>">
     <input type="hidden" name="boardDepth" value="<%= request.getParameter("depth")%>">
     <input type="hidden" name="boardPorder" value="<%= request.getParameter("porder")%>">
     <table>

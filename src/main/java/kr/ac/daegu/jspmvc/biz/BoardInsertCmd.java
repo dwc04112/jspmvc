@@ -42,7 +42,10 @@ public class BoardInsertCmd implements BoardCmd {
             // board 테이블에 들어갈 id값을 가져오기 : board.id중에서 가장 높은 id값 + 1
             newId = dao.getBoardNewId();
             // dao 기능 호출해서 enduser가 입력한 데이터를 insert
-            dao.insertBoardContent(newId, subject, author, content, password, pid, depth, porder);
+
+            // 원글은 pid = id 니까
+            // pid 값에 newId 를 넣어줘서 pid값과 newid 값을 같이해줬다
+            dao.insertBoardContent(newId, subject, author, content, password, newId, depth, porder);
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

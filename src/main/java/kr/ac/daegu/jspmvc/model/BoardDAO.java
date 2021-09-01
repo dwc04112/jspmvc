@@ -37,10 +37,7 @@ public class BoardDAO {
         }
 
         // 쿼리 준비 & db 쿼리
-        pstmt = conn.prepareStatement("select * \n" +
-                "from \n" +
-                "(select board.*, ROW_NUMBER() OVER() as rowNum from board order by id asc) tb\n" +
-                "where tb.rowNum between "+startRowNum+" and "+endRowNum);
+        pstmt = conn.prepareStatement("select *from(select board.*,row_number() over(ORDER By pid asc, porder asc) as rowNum from board order by pid asc, porder asc)tb  where tb.rowNum between "+startRowNum+" and "+endRowNum);
         rs = pstmt.executeQuery();
 
         // 글 목록을 반환할 ArrayList
@@ -50,23 +47,25 @@ public class BoardDAO {
         // list에 넣는다.
         while(rs.next()) {
             int id = rs.getInt("id");
-            String author = rs.getString("author");
             String subject = rs.getString("subject");
+            String author = rs.getString("author");
             String content = rs.getString("content");
             Date writeDate = rs.getDate("writeDate");
             Time writeTime = rs.getTime("writeTime");
             int readCount = rs.getInt("readCount");
             int commentCount = rs.getInt("commentCount");
+            int depth = rs.getInt("depth");
 
             BoardDTO dto = new BoardDTO();
             dto.setId(id);
-            dto.setAuthor(author);
             dto.setSubject(subject);
+            dto.setAuthor(author);
             dto.setContent(content);
             dto.setWriteDate(writeDate);
             dto.setWriteTime(writeTime);
             dto.setReadCount(readCount);
             dto.setCommentCount(commentCount);
+            dto.setDepth(depth);
 
             boardRowList.add(dto);
         }
@@ -79,12 +78,13 @@ public class BoardDAO {
         return boardRowList;
     }
 
-    public void CountCommentNum(int pageNum, int pagePerRow) throws ClassNotFoundException, SQLException {
+    public void CountCommentNum(/*int pageNum, int pagePerRow*/ int maxId) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Class.forName("org.mariadb.jdbc.Driver");
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        /*
         int startRowNum;
         int endRowNum = pageNum*pagePerRow;
         if(pageNum == 1){
@@ -92,14 +92,68 @@ public class BoardDAO {
         } else {
             startRowNum = (pagePerRow*(pageNum-1))+1;
         }
-        for(int i= startRowNum; i<=endRowNum;i++) {
+
+         */
+        for(int i= 1; i<=maxId;i++) {
             pstmt = conn.prepareStatement("update board set commentCount=(select count(id) from comment where id=?) where id=?");
             pstmt.setInt(1, i);
             pstmt.setInt(2, i);
-            rs = pstmt.executeQuery();
+            pstmt.executeQuery();
         }
     }
 
+    public int getBoardPorder(int pid, int depth,int porder)  throws ClassNotFoundException, SQLException {
+        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
+        Class.forName("org.mariadb.jdbc.Driver");
+        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        PreparedStatement pstmt = null;
+        ResultSet rs = null;
+        if (depth==1) {
+            pstmt = conn.prepareStatement("select max(porder) + 1 AS newPorder from Board where board.pid=?");
+            pstmt.setInt(1, pid);
+            rs = pstmt.executeQuery();
+        }else{
+            pstmt = conn.prepareStatement("select porder+1 as newPorder from board where board.pid=? and board.porder =?");
+            pstmt.setInt(1, pid);
+            pstmt.setInt(2, porder);
+            rs = pstmt.executeQuery();
+            porder=porder+1;
+            pstmt = conn.prepareStatement("update board set porder=porder+1 where porder >=? and pid=?");
+            pstmt.setInt(1,porder);
+            pstmt.setInt(2,pid);
+            pstmt.executeUpdate();
+        }
+        int newPorder = 0;
+        if(rs.next()){
+            newPorder = rs.getInt("newPorder");
+            /*
+            * id=2에서 글을 쓴다하면
+            * id=3 pid=2가되고 pid가 2인 모든 order값중 max값에 +1    따라서 porder=1
+            *
+            * id2의 답글 (id=3)에서 답글을 쓴다하면
+            * id=4 pid=2 그리고 id=3의 order값에 +1 을 하고 나머지 자기보다 크거나 같은order값은 모두 +1
+            *
+            * 원본글 id=2 에서 단 답글3개
+            * id=3 porder=1 | id=4 porder=2 | id=5 porder=3
+            * 여기서 id=3에서 다시 답글을 단다고 생각
+            * porder+1 후 나머지 자기와 같거나 큰 porder+1
+            *
+            * 이렇게하려면 어떻게 해야할까??---
+            * max(porder)+1 부분을 지우자
+            * 우선 newPorder는 porder+1
+            * */
+            if(newPorder == 0){
+            //여긴 답글이 달리는 부분이므로 porder는 무조건 1 이상이어야한다
+                newPorder = 1;
+                return newPorder;
+            }else{
+                return newPorder;
+            }
+
+        }
+        // 예외 발생
+        throw new SQLException("답글을 새로 입력하기 위한 오더값 받아오기를 실패하였습니다.");
+    }
 
 
 
@@ -140,8 +194,8 @@ public class BoardDAO {
         // insert into board values (1, 'testAuthor', 'testSubject', 'testContent', CURDATE(), CURTIME(), 0, 0)
         pstmt = conn.prepareStatement("insert into Board values (?, ?, ?, ?, CURDATE(), CURTIME(), 0, 0, ?, ?, ? , ?)");
         pstmt.setInt(1, newId);
-        pstmt.setString(2, subject);
-        pstmt.setString(3, author);
+        pstmt.setString(2, author);
+        pstmt.setString(3, subject);
         pstmt.setString(4, content);
         pstmt.setString(5, password);
         pstmt.setInt(6,pid);
@@ -165,8 +219,9 @@ public class BoardDAO {
         BoardDTO data = new BoardDTO();
         if(rs.next()){
 //            int id = rs.getInt("id");
-            String author = rs.getString("author");
+
             String subject = rs.getString("subject");
+            String author = rs.getString("author");
             String content = rs.getString("content");
             Date writeDate = rs.getDate("writeDate");
             Time writeTime = rs.getTime("writeTime");
@@ -179,8 +234,9 @@ public class BoardDAO {
 
 
             data.setId(id);
-            data.setAuthor(author);
+
             data.setSubject(subject);
+            data.setAuthor(author);
             data.setContent(content);
             data.setWriteDate(writeDate);
             data.setWriteTime(writeTime);
@@ -356,6 +412,7 @@ public class BoardDAO {
         // 예외 발생
         throw new SQLException("글 컨텐츠를 새로 입력하기 위한 아이디값 받아오기를 실패하였습니다.");
     }
+
 
 
 
