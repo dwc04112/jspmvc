@@ -41,9 +41,8 @@
     <c:forEach items="${boardRowList}" var="row">
         <tr>
             <td>
-                <c:set var="sum" value="${sum+1}"/>
-                <c:out value="${sum}"/>
-
+                ${row.id}
+                <!--여기 수정해야함-->
             </td>
             <td>${row.author}</td>
             <td>
@@ -51,7 +50,7 @@
                     <c:forEach var="i" begin="0" end="${row.depth -1}" >
                         <c:out value="[RE:]"/>
                     </c:forEach>
-                    <!--여기 수정해야함-->
+
                 </c:if>
                 <a href="boardRead.bbs?id=${row.id}">${row.subject}</a>
                 <!-- 제목을 누르면 글 읽기에 해당하는 controller 요청-->

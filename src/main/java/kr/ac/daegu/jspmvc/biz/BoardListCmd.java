@@ -18,7 +18,7 @@ import java.util.ArrayList;
 public class BoardListCmd implements BoardCmd {
 
     // 페이지당 몇개의 글목록을 보여줄것인지?
-    public static final int DEFAULT_PAGE_PER_ROW = 5;
+    public static final int DEFAULT_PAGE_PER_ROW = 10;
 
     @Override
     public boolean execute(HttpServletRequest request, HttpServletResponse response)

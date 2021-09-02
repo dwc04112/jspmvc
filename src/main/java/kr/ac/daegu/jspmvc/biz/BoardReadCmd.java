@@ -38,14 +38,15 @@ public class BoardReadCmd implements BoardCmd {
             /*
              * 가져온 db 데이터 리스트를 어떻게 jsp로 보여줄것인가?
              * */
-            request.setAttribute("CommentRowList", list);
+
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }
 
         //  boardRead.jsp에 보여줄 데이터를 셋
         request.setAttribute("boardData", boardData);
-
+        // 댓글 보여주기
+        request.setAttribute("CommentRowList", list);
         return true;
     }
 }

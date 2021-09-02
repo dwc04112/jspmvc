@@ -108,11 +108,14 @@ public class BoardDAO {
         Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+        /*
         if (depth==1) {
             pstmt = conn.prepareStatement("select max(porder) + 1 AS newPorder from Board where board.pid=?");
             pstmt.setInt(1, pid);
             rs = pstmt.executeQuery();
         }else{
+         }
+         */
             pstmt = conn.prepareStatement("select porder+1 as newPorder from board where board.pid=? and board.porder =?");
             pstmt.setInt(1, pid);
             pstmt.setInt(2, porder);
@@ -122,7 +125,6 @@ public class BoardDAO {
             pstmt.setInt(1,porder);
             pstmt.setInt(2,pid);
             pstmt.executeUpdate();
-        }
         int newPorder = 0;
         if(rs.next()){
             newPorder = rs.getInt("newPorder");
