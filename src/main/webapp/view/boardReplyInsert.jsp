@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: 사용자
-  Date: 2021-08-25
-  Time: 오후 3:22
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -15,9 +8,11 @@
     <input type="hidden" name="boardPId" value="<%= request.getParameter("pid")%>">
     <input type="hidden" name="boardDepth" value="<%= request.getParameter("depth")%>">
     <input type="hidden" name="boardPorder" value="<%= request.getParameter("porder")%>">
+    <%String ReadSubject = request.getParameter("boardSubject");%>
+
     <table>
         <tr>
-            <td colspan="2">글 추가하기</td>
+            <td colspan="2">"<%=ReadSubject%>" 글에 답글 추가하기</td>
         </tr>
         <tr>
             <td><label for="subject">제목</label></td>
@@ -42,5 +37,6 @@
         </tr>
     </table>
 </form>
+
 </body>
 </html>

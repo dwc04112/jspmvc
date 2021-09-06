@@ -69,6 +69,7 @@
         <td colspan="7">
             <c:forEach var="i" begin="1" end="${totalPageCount}">
             <a href="boardList.bbs?page=${i}&pagePerRow=${pagePerRow}">[<c:out value="${i}"/>]<a/>
+                <c:set value="${i}" var="pageNum"/>
                 </c:forEach>
         </td>
     </tr>

@@ -67,7 +67,7 @@
             <a href="boardList.bbs">[글 목록 보기]</a>
             <a href="./view/boardPasswordToUpdate.jsp?id=${boardData.id}">[수정하기]</a>
             <a href="./view/boardPasswordToDelete.jsp?id=${boardData.id}">[삭제하기]</a>
-            <a href="./view/boardReplyInsert.jsp?id=${boardData.id}&pid=${boardData.pid}&depth=${boardData.depth}&porder=${boardData.porder}">[답글쓰기]</a>
+            <a href="./view/boardReplyInsert.jsp?id=${boardData.id}&pid=${boardData.pid}&depth=${boardData.depth}&porder=${boardData.porder}&boardSubject=${boardData.subject}">[답글쓰기]</a>
             <!-- ORDER : 패스워드 확인 하고 boardPasswordToDelete.jsp -->
         </td>
     </tr>

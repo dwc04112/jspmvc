@@ -11,6 +11,9 @@ CREATE TABLE Board (
            password     VARCHAR(300)  NOT NULL default '0000' COMMENT '수정삭제비밀번호' -- 수정삭제비밀번호
 )
     COMMENT '게시글';
+alter table board add column pid Int not null default 0 -- 상위 글번호
+alter table board add column depth Int not null default 0
+alter table board add column porder Int not null default 0
 
 -- 댓글
 CREATE TABLE Comment (

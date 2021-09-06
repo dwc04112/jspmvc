@@ -53,6 +53,7 @@ public class BoardReplyInsertCmd implements BoardCmd {
 
             // board 테이블에 들어갈 id값을 가져오기 : board.id중에서 가장 높은 id값 + 1
             newId = dao.getBoardNewId();
+            // 답글달기를 작성할때 해당 답글이 들어갈 위치를 정해준다
             newPorder = dao.getBoardPorder(pid,depth,porder);
             // dao 기능 호출해서 enduser가 입력한 데이터를 insert
             dao.insertBoardContent(newId, subject, author, content, password, pid, depth, newPorder);

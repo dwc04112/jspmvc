@@ -94,6 +94,7 @@ public class BoardDAO {
         }
 
          */
+        // 댓글 수
         for(int i= 1; i<=maxId;i++) {
             pstmt = conn.prepareStatement("update board set commentCount=(select count(id) from comment where id=?) where id=?");
             pstmt.setInt(1, i);
@@ -116,11 +117,18 @@ public class BoardDAO {
         }else{
          }
          */
+
+
+
+
+            //답글을 쓰는 글의 pid의 porder를 가져와 +1을 해준다 (이 번호가 답글의 porder)
+
             pstmt = conn.prepareStatement("select porder+1 as newPorder from board where board.pid=? and board.porder =?");
             pstmt.setInt(1, pid);
             pstmt.setInt(2, porder);
             rs = pstmt.executeQuery();
-            porder=porder+1;
+            porder=porder+1;    //아래쿼리에서 쓰기위해서
+            //그리고 방금 구해준 newPorder보다 크거나 같은 porder 값들을 모두+1 해주어 답글이 들어갈 공간을 만들어준다
             pstmt = conn.prepareStatement("update board set porder=porder+1 where porder >=? and pid=?");
             pstmt.setInt(1,porder);
             pstmt.setInt(2,pid);
