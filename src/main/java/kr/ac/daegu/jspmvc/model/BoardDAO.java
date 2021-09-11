@@ -6,24 +6,11 @@ import java.util.Date;
 
 // DatabaseAccessObject : 이 객체가 db에 접속해서 쿼리를 날리고 결과를 리턴해주는 책임
 public class BoardDAO {
-    private static final String DB_URL  = "jdbc:mariadb://localhost:3306/dgd";
-    private static final String DB_USER = "root";
-    private static final String DB_PW   = "0000";
-
-    public static boolean getConnection() throws SQLException, ClassNotFoundException {
-        // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        return true;
-    }
 
     public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow)
             throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -80,8 +67,7 @@ public class BoardDAO {
 
     public void CountCommentNum(/*int pageNum, int pagePerRow*/ int maxId) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         /*
@@ -105,8 +91,7 @@ public class BoardDAO {
 
     public int getBoardPorder(int pid, int depth,int porder)  throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         /*
@@ -119,15 +104,13 @@ public class BoardDAO {
          */
 
 
-
-
             //답글을 쓰는 글의 pid의 porder를 가져와 +1을 해준다 (이 번호가 답글의 porder)
-
             pstmt = conn.prepareStatement("select porder+1 as newPorder from board where board.pid=? and board.porder =?");
             pstmt.setInt(1, pid);
             pstmt.setInt(2, porder);
             rs = pstmt.executeQuery();
             porder=porder+1;    //아래쿼리에서 쓰기위해서
+
             //그리고 방금 구해준 newPorder보다 크거나 같은 porder 값들을 모두+1 해주어 답글이 들어갈 공간을 만들어준다
             pstmt = conn.prepareStatement("update board set porder=porder+1 where porder >=? and pid=?");
             pstmt.setInt(1,porder);
@@ -169,8 +152,7 @@ public class BoardDAO {
 
     public int getBoardNewId() throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -196,8 +178,7 @@ public class BoardDAO {
                                    int pid,
                                    int depth, int porder) throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
 
         // 쿼리 준비 & db 쿼리
@@ -217,8 +198,7 @@ public class BoardDAO {
 
     public BoardDTO getBoardData(int id) throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         // 쿼리 실행시키고
@@ -263,8 +243,7 @@ public class BoardDAO {
 
     public void boardRowPlusReadCount(int rowId, int howMuch) throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
 
         // 해당 아이디의 row에서 readCount를 +1 해주는 쿼리 실행
@@ -280,8 +259,7 @@ public class BoardDAO {
                                    String subject,
                                    String content) throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         // 해당 아이디의 row에서 subject와 content를 업데이트
         pstmt = conn.prepareStatement("update Board set subject=?, content=? where id = ?");
@@ -294,8 +272,7 @@ public class BoardDAO {
 
     public void deleteBoardData(int id) throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         // 해당 아이디의 row를 삭제
         pstmt = conn.prepareStatement("delete from board where id = ?");
@@ -305,8 +282,7 @@ public class BoardDAO {
 
     public int getBoardTotalRowCount() throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         // board테이블 전체 row 갯수
@@ -325,8 +301,7 @@ public class BoardDAO {
                               String commentAuthor,
                               String commentContent) throws ClassNotFoundException, SQLException {
         // db에 접속해서
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
 
         // 새로운 댓글을 insert
@@ -340,8 +315,7 @@ public class BoardDAO {
 
     public int getCommentNewId()  throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
@@ -362,8 +336,7 @@ public class BoardDAO {
     public ArrayList<CommentDTO> getBoardCommentList()
             throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         pstmt = conn.prepareStatement("select * from comment");
@@ -404,8 +377,7 @@ public class BoardDAO {
 
     public int getBoardDepth() throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
-        Class.forName("org.mariadb.jdbc.Driver");
-        Connection conn = DriverManager.getConnection(DB_URL, DB_USER, DB_PW);
+        Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
 
