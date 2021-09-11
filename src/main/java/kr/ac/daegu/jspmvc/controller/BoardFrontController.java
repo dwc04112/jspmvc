@@ -43,6 +43,14 @@ public class BoardFrontController extends HttpServlet {
             }
         }
 
+        // 회원가입 처리
+        if(cmdURI.equals("/signUp.bbs")){
+            cmd = new SignUpCmd();
+            cmd.execute(request, response);
+            viewPage = "index.jsp";
+        }
+
+
         // 글 목록 조회 처리(/jspmvc/boardList.bbs)
         if (cmdURI.equals("/boardList.bbs")) {
             cmd = new BoardListCmd();
