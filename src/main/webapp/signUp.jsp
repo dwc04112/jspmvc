@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 
@@ -9,10 +10,10 @@
             var pw = document.getElementById("password").value;
             var pwCheck = document.getElementById("passwordCheck").value;
 
-            if(pwCheck == ""){
+            if(pwCheck === ""){         // ==과 ===차이 기준 : 타입의 값과 타입까지 비교하냐?
                 document.getElementById('pwsame').innerHTML = "비밀번호 확인을 입력해주세요."
             }else {
-                if (pw != pwCheck) {
+                if (pw !== pwCheck) {
                     //alert('비밀번호가 틀렸습니다. 다시 입력해주세요');
                     document.getElementById('pwsame').innerHTML = "비밀번호가 일치하지 않습니다."
                     return false;
@@ -24,13 +25,34 @@
         function tocheckpw2(){
             var pw = document.getElementById("password").value;
             var pwCheck = document.getElementById("passwordCheck").value;
-            if (pw != pwCheck) {
+            if(pw.length<1 || pw==null){
+                alert("비밀번호를 입력해주세요");
+                return false;
+            }
+            if (pw !== pwCheck) {
                 alert('비밀번호가 틀렸습니다. 다시 입력해주세요');
                 return false;
-            }else if(pw == pwCheck){
+            } /*else if(pw == pwCheck){
                 alert('회원가입 완료!')
-            }
+            }*/
         }
+
+        function idcheck(){
+            //0912====
+            //중복확인 누르면 (아이디가 입력되었을때) idCheckCmd로 이동해서 입력한 아이디값이 중복되는지 확인한다
+            //있으면 1 없으면 0
+            var id = document.getElementById("id").value;
+            if(id.length<1 || id==null){
+                alert("중복체크할 아이디를 입력하십시오");
+                return false;
+            }
+            var url = "idCheck.bbs?id="+ id;
+            window.open(url, "get", "height = 180, width = 300");
+
+        }
+
+
+
 
     </script>
     <title>회원가입 화면</title>
@@ -38,13 +60,15 @@
 <body>
 <form action="signUp.bbs" method="post" onsubmit="return tocheckpw2()" data-ajax ="false" >
     <table>
-        <tr>
-            <td><label for="id">아이디</label></td>
-            <td><input type="text" name="id" id="id"/></td>
-        </tr>
+            <tr>
+                <td><label for="id">아이디</label></td>
+                <td><input type="text" name="id" id="id"/></td>
+                <!--0912 중복된 아이디가 있으면 어떻게 처리할까? 0912==-->
+                <td><input type="button" value="중복확인" onclick="return idcheck()"/></td>
+            </tr>
         <tr>
             <td><label for="password">비번</label></td>
-            <td><input type="text" name="password" id="password" onkeyup="tocheckpw1()"/></td>
+            <td><input type="text" name="password" id="password"  onkeyup="tocheckpw1()"/></td>
         </tr>
         <tr>
             <td><label for="passwordCheck">비번확인</label></td>

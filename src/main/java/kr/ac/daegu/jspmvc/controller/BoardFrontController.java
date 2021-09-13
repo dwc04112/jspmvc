@@ -46,9 +46,22 @@ public class BoardFrontController extends HttpServlet {
         // 회원가입 처리
         if(cmdURI.equals("/signUp.bbs")){
             cmd = new SignUpCmd();
-            cmd.execute(request, response);
-            viewPage = "index.jsp";
+            boolean signSuccess = cmd.execute(request, response);
+            if(signSuccess) {
+                viewPage = "index.jsp";
+            }else{
+                viewPage = "view/memberIdCheckFalse.jsp";
+            }
         }
+
+        // 중복 아이디 점검 0912==
+        if(cmdURI.equals("/idCheck.bbs")){
+            cmd = new idCheckCmd();
+            cmd.execute(request, response);
+            viewPage = "view/idCheck.jsp";
+        }
+
+
 
 
         // 글 목록 조회 처리(/jspmvc/boardList.bbs)

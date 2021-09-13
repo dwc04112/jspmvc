@@ -1,7 +1,9 @@
 package kr.ac.daegu.jspmvc.biz;
 
+import kr.ac.daegu.jspmvc.common.PasswordEncoder;
 import kr.ac.daegu.jspmvc.model.MemberDAO;
 import kr.ac.daegu.jspmvc.model.MemberDTO;
+import sun.security.util.Password;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -36,22 +38,7 @@ public class LoginCmd implements BoardCmd {
     }
 
     private boolean isPasswordMatch(String inputPassword, MemberDTO member) {
-        String passwordSalt = inputPassword + member.getSalt();
-        String encodedPassword = null;
-        try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            digest.reset();
-            digest.update(passwordSalt.getBytes(StandardCharsets.UTF_8));
-            encodedPassword = String.format("%040x", new BigInteger(1, digest.digest()));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        }
-        System.out.println("=========여기는 LoginCmd 입니다=======");
-        System.out.println("inputPassword = " + inputPassword);
-        System.out.println("salt = " + passwordSalt);
-        System.out.println("encodedPassword = " + encodedPassword);
-        System.out.println("dbPassword = " + member.getPassword());
-        System.out.println("=========여기는 LoginCmd 입니다=======");
-        return member.getPassword().equals(encodedPassword);
+        String encodePassword = PasswordEncoder.getEncodePassword(inputPassword, member.getSalt());
+        return member.getPassword().equals(encodePassword);
     }
 }
