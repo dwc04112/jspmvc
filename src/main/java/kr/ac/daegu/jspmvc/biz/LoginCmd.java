@@ -33,6 +33,10 @@ public class LoginCmd implements BoardCmd {
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
         }
+        if(member.getPassword()==null){
+            System.out.println("입력된 아이디와 일치하는 정보가 없습니다");
+            return false;
+        }
         // 비밀번호 매칭
         return isPasswordMatch(password, member);
     }
