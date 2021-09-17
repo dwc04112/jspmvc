@@ -13,17 +13,22 @@ public class idCheckCmd implements BoardCmd {
     @Override
     public boolean execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         //0912===
-        int memberId;
+
         String id = request.getParameter("id");
 
 
         MemberDAO memDAO = new MemberDAO();
         try {
             System.out.println("받은 아이디는 ? =" + id);
-            memberId = memDAO.compareId(id);
+            int memberId = memDAO.compareId(id);
             System.out.println("중복확인 버튼 눌렀을때 :: 중복된 ID값이 있나요?? 있으면 1 없으면 0 == " +memberId);
             request.setAttribute("memIdCheck", memberId);
-
+            if(memberId==0) {
+                request.setAttribute("idValue", id);
+            }else{
+                id ="새로운 아이디 입력";
+                request.setAttribute("idValue", id);
+            }
         }catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();
         }

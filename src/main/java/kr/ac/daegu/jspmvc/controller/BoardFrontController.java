@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 
 @WebServlet("*.bbs") // jspmvc/*.bbs 으로 들어오는 모든 요청을 처리하는 서블릿
 public class BoardFrontController extends HttpServlet {
@@ -58,7 +59,9 @@ public class BoardFrontController extends HttpServlet {
         if(cmdURI.equals("/idCheck.bbs")){
             cmd = new idCheckCmd();
             cmd.execute(request, response);
-            viewPage = "view/idCheck.jsp";
+            //viewPage = "view/idCheck.jsp";
+
+            viewPage = "signUp.jsp";
         }
 
 
