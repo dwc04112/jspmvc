@@ -14,7 +14,22 @@
 </head>
 <body>
 <!-- BoardListCmd.java에서 가져온 데이터를 어떻게 jsp파일에서 html 형태로 보여줄 것인가? -->
+
 <table>
+    <form action="boardList.bbs?page=1" name="reqSearchBoard" method="post">
+        <tr> <!--게시판 검색기능 작성자/제목/내용-->
+            <td><label for="searchBoard">검색</label></td>
+            <td colspan="3">
+                <select name="item">
+                    <option value="subject">제목</option>
+                    <option value="content">내용</option>
+                    <option value="author">작성자</option>
+                </select>
+                <input type="text" name="searchBoard" id="searchBoard">
+                <input type="submit" value="검색"/>
+            </td>
+        </tr>
+    </form>
     <tr>
         <td colspan="7">
             <label for="pagePerRow">페이지당 보여줄 글의 갯수 :</label>

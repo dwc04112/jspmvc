@@ -30,6 +30,7 @@ public class BoardListCmd implements BoardCmd {
 
         // 한페이지당 보여줄 글의 갯수 (default 3)
         String pagePerRowStr = request.getParameter("pagePerRow");
+
         int pagePerRow = DEFAULT_PAGE_PER_ROW;
         if(pagePerRowStr != null){
             pagePerRow = Integer.parseInt(pagePerRowStr);
@@ -45,10 +46,14 @@ public class BoardListCmd implements BoardCmd {
         } else {
             pageNum = Integer.parseInt(request.getParameter("page"));
         }
+        String item = request.getParameter("item");
+        String search = request.getParameter("searchBoard");
+        System.out.println("기준 값과 입력내용 :: " +item+" :: 그리고 :: " +search);
+
 
         try {
             //dao.CountCommentNum(pageNum, pagePerRow);
-            list = dao.getBoardList(pageNum, pagePerRow);
+            list = dao.getBoardList(pageNum, pagePerRow, item, search);
             /*
              * 페이지 번호가 몇번까지 나올 수 있는가?
              * */

@@ -43,7 +43,6 @@
         function ConfId() {
             document.getElementById("finalConf").value = "idNonPass";
         }
-
         function tocheckpw2(){
             var pw = document.getElementById("password").value;
             var pwCheck = document.getElementById("passwordCheck").value;
@@ -71,12 +70,6 @@
                 return false;
             }
         }
-
-
-
-
-
-
     </script>
     <title>회원가입 화면</title>
 </head>
@@ -118,7 +111,6 @@
 <c:if test="${memIdCheck==0}">
     <script> alert("사용 가능한 아이디 입니다.") </script>
 </c:if>
-
 </body>
 </html>
 
