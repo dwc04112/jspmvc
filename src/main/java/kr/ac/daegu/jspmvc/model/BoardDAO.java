@@ -7,14 +7,15 @@ import java.util.Date;
 // DatabaseAccessObject : 이 객체가 db에 접속해서 쿼리를 날리고 결과를 리턴해주는 책임
 public class BoardDAO {
 
-    public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow, String item, String search)
+    public ArrayList<BoardDTO> getBoardList(int pageNum, int pagePerRow, String itemNum, String search)
             throws ClassNotFoundException, SQLException {
         // Connection, PreparedStatement, ResultSet은 interface 객체이다.
         Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
-        System.out.println("db에서 기준 값과 입력내용 :: " +item+" :: "+search);
+        System.out.println("db에서 기준 값과 입력내용 :: " +itemNum+" :: "+search);
         // 페이징 처리에 따라 rowNum의 시작과 끝값을 변수처리
+        String searchIn = "%"+search+"%";
         int startRowNum;
         int endRowNum = pageNum*pagePerRow;
         if(pageNum == 1){
@@ -26,23 +27,25 @@ public class BoardDAO {
             // 쿼리 준비 & db 쿼리
             pstmt = conn.prepareStatement("select *from(select board.*,row_number() over(ORDER By pid asc, porder asc) as rowNum from board order by pid asc, porder asc)tb  where tb.rowNum between " + startRowNum + " and " + endRowNum);
             rs = pstmt.executeQuery();
-        }/*else{ //0918 수정해야함
-            if(item=="subject") {
-                pstmt = conn.prepareStatement("select * from board where subject like %?% ");
-                pstmt.setString(1, search);
+        }else{ //0918 수정해야함
+            if("1".equals(itemNum)) {
+                System.out.println("입력된 search = "+search);
+
+                pstmt = conn.prepareStatement("select * from board where subject like ?");
+                pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
-            }else if(item=="content"){
-                pstmt = conn.prepareStatement("select * from board where content like %?% ");
-                pstmt.setString(1, search);
+            }else if("2".equals(itemNum)){
+                pstmt = conn.prepareStatement("select * from board where content like ? ");
+                pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
-            }else if(item=="author"){
-                pstmt = conn.prepareStatement("select * from board where author like %?% ");
-                pstmt.setString(1, search);
+            }else if("3".equals(itemNum)){
+                pstmt = conn.prepareStatement("select * from board where author like ? ");
+                pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
             }
         }
 
-             */
+
 
         // 글 목록을 반환할 ArrayList
         ArrayList<BoardDTO> boardRowList = new ArrayList<BoardDTO>();
