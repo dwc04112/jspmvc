@@ -31,7 +31,7 @@ public class BoardDAO {
             if("1".equals(itemNum)) {
                 System.out.println("입력된 search = "+search);
 
-                pstmt = conn.prepareStatement("select * from board where subject like ?");
+                pstmt = conn.prepareStatement("select *from (select board.*,row_number()over() as wNum from board where board.subject like ? order by board.writeDate asc,board.writeTime asc)wn where wn.wNum between " + startRowNum + " and " + endRowNum);
                 pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
             }else if("2".equals(itemNum)){
