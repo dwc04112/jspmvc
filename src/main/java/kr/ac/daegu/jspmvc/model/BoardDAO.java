@@ -35,11 +35,11 @@ public class BoardDAO {
                 pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
             }else if("2".equals(itemNum)){
-                pstmt = conn.prepareStatement("select * from board where content like ? ");
+                pstmt = conn.prepareStatement("select *from (select board.*,row_number()over() as wNum from board where board.content like ? order by board.writeDate asc,board.writeTime asc)wn where wn.wNum between " + startRowNum + " and " + endRowNum);
                 pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
             }else if("3".equals(itemNum)){
-                pstmt = conn.prepareStatement("select * from board where author like ? ");
+                pstmt = conn.prepareStatement("select *from (select board.*,row_number()over() as wNum from board where board.author like ? order by board.writeDate asc,board.writeTime asc)wn where wn.wNum between " + startRowNum + " and " + endRowNum);
                 pstmt.setString(1, searchIn);
                 rs = pstmt.executeQuery();
             }
@@ -300,13 +300,24 @@ public class BoardDAO {
         pstmt.executeUpdate();
     }
 
-    public int getBoardTotalRowCount() throws ClassNotFoundException, SQLException {
+    public int getBoardTotalRowCount(String search) throws ClassNotFoundException, SQLException {
         // db에 접속해서
         Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
+        //0920 검색한 list에도 순번을 주기 위해서
+        String searchIn = "%"+search+"%";
+
         // board테이블 전체 row 갯수
-        pstmt = conn.prepareStatement("select count(*) as count from Board");
+        if(search==null) {
+            pstmt = conn.prepareStatement("select count(*) as count from Board");
+        }
+        else {
+            //0920 검색한 list에도 순번을 주기 위해서
+            pstmt = conn.prepareStatement("select count(*) as count from board where subject like ? ");
+            pstmt.setString(1, searchIn);
+        }
         rs = pstmt.executeQuery();
 
         if(rs.next()){
@@ -400,6 +411,7 @@ public class BoardDAO {
         Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
         ResultSet rs = null;
+
 
         // newId를 가져오는 쿼리
         pstmt = conn.prepareStatement("select max(depth) + 1  from Board");

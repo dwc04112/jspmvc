@@ -50,6 +50,7 @@ public class BoardListCmd implements BoardCmd {
 
         String search = request.getParameter("searchBoard");
         System.out.println("기준 값과 입력내용 :: " +itemNum+" :: 그리고 :: " +search);
+        System.out.println("페이지당 보여줄 글 수 :: " + pagePerRowStr);
 
 
 
@@ -60,7 +61,7 @@ public class BoardListCmd implements BoardCmd {
              * 페이지 번호가 몇번까지 나올 수 있는가?
              * */
             // (board테이블 전체 글의 갯수, row갯수)
-            int totalRowCount = dao.getBoardTotalRowCount();
+            int totalRowCount = dao.getBoardTotalRowCount(search);
             // 전체 페이지 수 산출
             int totalPageCount = getTotalPageCount(pagePerRow, totalRowCount);
 
@@ -70,6 +71,8 @@ public class BoardListCmd implements BoardCmd {
             request.setAttribute("boardRowList", list);
             request.setAttribute("pagePerRow", pagePerRow);
             request.setAttribute("totalPageCount", totalPageCount);
+            request.setAttribute("searchStr",search);
+            request.setAttribute("itemInt",itemNum);
 
         } catch (ClassNotFoundException | SQLException e) {
             e.printStackTrace();

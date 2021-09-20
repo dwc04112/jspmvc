@@ -16,33 +16,31 @@
 <!-- BoardListCmd.java에서 가져온 데이터를 어떻게 jsp파일에서 html 형태로 보여줄 것인가? -->
 
 <table>
-    <form action="boardList.bbs?page=1" name="reqSearchBoard" method="post">
         <tr> <!--게시판 검색기능 작성자/제목/내용-->
             <td><label for="searchBoard">검색</label></td>
+                <td colspan="3">
+                    <form action="boardList.bbs?page=1&pagePerRow=${pagePerRow}" name="reqSearchBoard" method="post">
+                    <select name="item">
+                        <option value="1">제목</option>
+                        <option value="2">내용</option>
+                        <option value="3">작성자</option>
+                    </select>
+                    <input type="text" name="searchBoard" id="searchBoard" value="${searchStr}">
+                        <input type="submit" value="검색"/>
+                </form>
+            </td>
             <td colspan="3">
-                <select name="item">
-                    <option value="1">제목</option>
-                    <option value="2">내용</option>
-                    <option value="3">작성자</option>
-                </select>
-                <input type="text" name="searchBoard" id="searchBoard">
-                <input type="submit" value="검색"/>
+                <!-- calibration : Key,Value 값을 '처리에 의미 있는 있는 범위 내로' 데이터 처리 -->
+                <!-- validation  : Key,Value 값 검증(처리할 수 있는 데이터 타입인가? 데이터 포맷인가?) -->
+                <form action="boardList.bbs?page=1&item=${itemInt}&searchBoard=${searchStr}" name="reqPagePerRow" method="post">
+                    <label for="pagePerRow">페이지당 보여줄 글의 갯수 :</label>
+                    <input type="text" name="pagePerRow" id="pagePerRow" value="${pagePerRow}">
+                    <button onclick="checkPagePerRow()">확인</button>
+                </form>
+
+                <%--                <input type="submit" value="확인"/>--%>
             </td>
         </tr>
-    </form>
-    <tr>
-        <td colspan="7">
-            <label for="pagePerRow">페이지당 보여줄 글의 갯수 :</label>
-            <!-- calibration : Key,Value 값을 '처리에 의미 있는 있는 범위 내로' 데이터 처리 -->
-            <!-- validation  : Key,Value 값 검증(처리할 수 있는 데이터 타입인가? 데이터 포맷인가?) -->
-            <form action="boardList.bbs?page=1" name="reqPagePerRow" method="post">
-                <input type="text" name="pagePerRow" id="pagePerRow" value="${pagePerRow}"/>
-            </form>
-            <button onclick="checkPagePerRow()">확인</button>
-            <%--                <input type="submit" value="확인"/>--%>
-
-        </td>
-    </tr>
     <tr>
         <td>글번호</td>
         <td>작성자</td>
@@ -83,7 +81,7 @@
     <tr>
         <td colspan="7">
             <c:forEach var="i" begin="1" end="${totalPageCount}">
-            <a href="boardList.bbs?page=${i}&pagePerRow=${pagePerRow}">[<c:out value="${i}"/>]<a/>
+            <a href="boardList.bbs?page=${i}&pagePerRow=${pagePerRow}&item=${itemInt}&searchBoard=${searchStr}">[<c:out value="${i}"/>]<a/>
                 <c:set value="${i}" var="pageNum"/>
                 </c:forEach>
         </td>
