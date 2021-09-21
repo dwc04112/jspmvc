@@ -61,7 +61,7 @@ public class BoardListCmd implements BoardCmd {
              * 페이지 번호가 몇번까지 나올 수 있는가?
              * */
             // (board테이블 전체 글의 갯수, row갯수)
-            int totalRowCount = dao.getBoardTotalRowCount(search);
+            int totalRowCount = dao.getBoardTotalRowCount(search, itemNum);
             // 전체 페이지 수 산출
             int totalPageCount = getTotalPageCount(pagePerRow, totalRowCount);
 
@@ -98,6 +98,7 @@ public class BoardListCmd implements BoardCmd {
         T = 51 / 3, T= 17
     * */
     private int getTotalPageCount(int pagePerRow, int totalRowCount) {
+        //System.out.println("페이지들 : " +totalRowCount+" 그리고 "+pagePerRow);
         if (totalRowCount % pagePerRow == 0) {
             return totalRowCount / pagePerRow;
         } else {

@@ -300,7 +300,7 @@ public class BoardDAO {
         pstmt.executeUpdate();
     }
 
-    public int getBoardTotalRowCount(String search) throws ClassNotFoundException, SQLException {
+    public int getBoardTotalRowCount(String search, String itemNum) throws ClassNotFoundException, SQLException {
         // db에 접속해서
         Connection conn = DBConnection.getConnection();
         PreparedStatement pstmt = null;
@@ -314,9 +314,17 @@ public class BoardDAO {
             pstmt = conn.prepareStatement("select count(*) as count from Board");
         }
         else {
-            //0920 검색한 list에도 순번을 주기 위해서
-            pstmt = conn.prepareStatement("select count(*) as count from board where subject like ? ");
-            pstmt.setString(1, searchIn);
+            if("1".equals(itemNum)) {
+                //0920 검색한 list에도 순번을 주기 위해서
+                pstmt = conn.prepareStatement("select count(*) as count from board where subject like ? ");
+                pstmt.setString(1, searchIn);
+            }else if("2".equals(itemNum)){
+                pstmt = conn.prepareStatement("select count(*) as count from board where content like ? ");
+                pstmt.setString(1, searchIn);
+            }else if("3".equals(itemNum)){
+                pstmt = conn.prepareStatement("select count(*) as count from board where author like ? ");
+                pstmt.setString(1, searchIn);
+            }
         }
         rs = pstmt.executeQuery();
 
